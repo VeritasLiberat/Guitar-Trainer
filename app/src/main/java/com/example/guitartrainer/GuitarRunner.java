@@ -49,6 +49,7 @@ public class GuitarRunner implements Runnable {
         currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
         this.context = context;
+        mediaPlayer = MediaPlayer.create(context, R.raw.metronome);
     }
 
     @Override
@@ -64,7 +65,6 @@ public class GuitarRunner implements Runnable {
     }
 
     private void playSound() {
-        mediaPlayer = MediaPlayer.create(context, R.raw.metronome);
         mediaPlayer.start();
     }
 
