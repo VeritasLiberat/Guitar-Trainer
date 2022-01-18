@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         buildHandlers();
         buildViews();
 
-        GuitarRunner guitarRunner = new GuitarRunner();
+        GuitarRunner guitarRunner = new GuitarRunner(this);
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(guitarRunner, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
     }

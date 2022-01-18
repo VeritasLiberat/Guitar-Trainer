@@ -1,5 +1,7 @@
 package com.example.guitartrainer;
 
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Message;
 
 import java.util.Random;
@@ -40,9 +42,13 @@ public class GuitarRunner implements Runnable {
     ChordLegacy currentChord;
     ChordLegacy nextChord;
 
-    GuitarRunner() {
+    Context context;
+    MediaPlayer mediaPlayer;
+
+    GuitarRunner(Context context) {
         currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
+        this.context = context;
     }
 
     @Override
@@ -58,6 +64,8 @@ public class GuitarRunner implements Runnable {
     }
 
     private void playSound() {
+        mediaPlayer = MediaPlayer.create(context, R.raw.metronome);
+        mediaPlayer.start();
     }
 
     void flashMetronome() {
