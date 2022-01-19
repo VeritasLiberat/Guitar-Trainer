@@ -29,36 +29,37 @@ public class GuitarRunner implements Runnable {
         }
     }
 
-    static final int beatsPerMinute = 60;  // beats per minute
-    static final int beatsPerMeasure = 4;
+    public static final int beatsPerMinute = 60;  // beats per minute
+    public static final int beatsPerMeasure = 4;
 
-    static final int millisecondsInAMinute = 60000;
+    public static final int millisecondsInAMinute = 60000;
 
-    static final int beatLengthMilli = millisecondsInAMinute / beatsPerMinute;
-    static final int measureLengthMilli = beatLengthMilli * beatsPerMeasure;
+    public static final int beatLengthMilli = millisecondsInAMinute / beatsPerMinute;
+    public static final int measureLengthMilli = beatLengthMilli * beatsPerMeasure;
 
-    static int currentBeat = 1;
+    public static int currentBeat = 1;
+
+    static final float loudVolume = 1.0f;
+    static final float normalVolume = 0.4f;
+
 
     ChordLegacy currentChord;
     ChordLegacy nextChord;
 
     Context context;
-    MediaPlayer mediaPlayerNormal;
-    MediaPlayer mediaPlayerLoud;
+    public MediaPlayer mediaPlayer;
 
     GuitarRunner(Context context) {
         currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
         this.context = context;
-        mediaPlayerNormal = MediaPlayer.create(context, R.raw.metronome);
-        mediaPlayerNormal.setVolume(0.4f, 0.4f);
-        mediaPlayerLoud = MediaPlayer.create(context, R.raw.metronome);
-        mediaPlayerLoud.setVolume(1f, 1f);
+        mediaPlayer = MediaPlayer.create(context, R.raw.metronome);
     }
 
     @Override
     public void run() {
-        playSound((currentBeat == 1) ? mediaPlayerLoud : mediaPlayerNormal);
+        System.out.println("Current Beat" + currentBeat);
+        playSound(currentBeat == 1);
         flashMetronome();
 
         if (currentBeat == 1) {
@@ -70,7 +71,13 @@ public class GuitarRunner implements Runnable {
         currentBeat++;
     }
 
-    private void playSound(MediaPlayer mediaPlayer) {
+    private void playSound(boolean playLoud) {
+        if (playLoud) {
+            mediaPlayer.setVolume(loudVolume, loudVolume);
+        } else {
+            mediaPlayer.setVolume(normalVolume, normalVolume);
+        }
+
         mediaPlayer.start();
     }
 

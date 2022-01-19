@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
@@ -53,17 +54,35 @@ public class MainActivity extends AppCompatActivity {
     static Handler chordHandler;
     static Handler metronomeHandler;
 
+    GuitarRunner guitarRunner;
+    ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         buildHandlers();
         buildViews();
 
-        GuitarRunner guitarRunner = new GuitarRunner(this);
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        guitarRunner = new GuitarRunner(this);
         scheduler.scheduleAtFixedRate(guitarRunner, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        scheduler.shutdown();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (scheduler.isShutdown()) {
+            scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleAtFixedRate(guitarRunner, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
+        }
     }
 
     void buildHandlers() {
@@ -82,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
                 final Animation animation = new AlphaAnimation(0, 1); // Change alpha from fully visible to invisible
                 animation.setDuration(GuitarRunner.beatLengthMilli / 8); // in ms
                 animation.setInterpolator(new LinearInterpolator());
-//                animation.setRepeatCount(Animation.INFINITE);
-//                animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
                 tempoView.startAnimation(animation);
             }
         };
