@@ -29,7 +29,7 @@ public class GuitarRunner implements Runnable {
         }
     }
 
-    static final int beatsPerMinute = 120;  // beats per minute
+    static final int beatsPerMinute = 60;  // beats per minute
     static final int beatsPerMeasure = 4;
 
     static final int millisecondsInAMinute = 60000;
@@ -43,28 +43,34 @@ public class GuitarRunner implements Runnable {
     ChordLegacy nextChord;
 
     Context context;
-    MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayerNormal;
+    MediaPlayer mediaPlayerLoud;
 
     GuitarRunner(Context context) {
         currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
         this.context = context;
-        mediaPlayer = MediaPlayer.create(context, R.raw.metronome);
+        mediaPlayerNormal = MediaPlayer.create(context, R.raw.metronome);
+        mediaPlayerNormal.setVolume(0.4f, 0.4f);
+        mediaPlayerLoud = MediaPlayer.create(context, R.raw.metronome);
+        mediaPlayerLoud.setVolume(1f, 1f);
     }
 
     @Override
     public void run() {
+        playSound((currentBeat == 1) ? mediaPlayerLoud : mediaPlayerNormal);
         flashMetronome();
-        playSound();
+
         if (currentBeat == 1) {
             changeChord();
         } else if (currentBeat == beatsPerMeasure) {
             currentBeat = 0;
         }
+
         currentBeat++;
     }
 
-    private void playSound() {
+    private void playSound(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
     }
 

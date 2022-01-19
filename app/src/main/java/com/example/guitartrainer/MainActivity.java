@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         metronomeHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                final Animation animation = new AlphaAnimation(1, 0); // Change alpha from fully visible to invisible
-                animation.setDuration(GuitarRunner.beatLengthMilli / 2); // in ms
+                final Animation animation = new AlphaAnimation(0, 1); // Change alpha from fully visible to invisible
+                animation.setDuration(GuitarRunner.beatLengthMilli / 8); // in ms
                 animation.setInterpolator(new LinearInterpolator());
 //                animation.setRepeatCount(Animation.INFINITE);
 //                animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
