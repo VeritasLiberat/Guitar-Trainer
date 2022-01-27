@@ -2,10 +2,12 @@ package com.example.guitartrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -113,5 +115,10 @@ public class MainActivity extends AppCompatActivity {
 
         currentChordView = findViewById(R.id.currentChord);
         nextChordView = findViewById(R.id.nextChord);
+    }
+
+    public void goToLearnMode(View view) {
+        Intent intent = new Intent(this, ChordListActivity.class);
+        startActivity(intent);
     }
 }

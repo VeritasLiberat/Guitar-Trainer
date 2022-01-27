@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GuitarTrainer">
+        <activity android:name=".ChordListActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".ChordDetailActivity"
+            android:parentActivityName=".ChordListActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

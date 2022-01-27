@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="chords">
+<!--        <item>name|positions|bar</item>-->
+        <item>E Minor|A;2;M,D;2;R|0</item>
+        <item>E Major|A;2;M,D;2;R,G;1;I|0</item>
+        <item>A Major|El;-1;null,D;2;M,G;2;R,B;1;I|0</item>
+        <item>F Minor|A;3;M,D;3;R|1</item>
+    </array>
+</resources>
