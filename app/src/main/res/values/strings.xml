@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Guitar Trainer</string>
+    <string name="edit_tempo_hint">Edit Tempo</string>
 </resources>

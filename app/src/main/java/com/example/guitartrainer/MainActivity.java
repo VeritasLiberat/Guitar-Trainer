@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.concurrent.Executors;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         buildHandlers();
         buildViews();
 
-        guitarRunner = new GuitarRunner(this);
+        guitarRunner = new GuitarRunner(this, this);
         scheduler.scheduleAtFixedRate(guitarRunner, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
     }
 

@@ -3,8 +3,11 @@ package com.example.guitartrainer;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Message;
+import android.text.Editable;
+import android.widget.EditText;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GuitarRunner implements Runnable {
     enum ChordLegacy {
@@ -29,13 +32,13 @@ public class GuitarRunner implements Runnable {
         }
     }
 
-    public static final int beatsPerMinute = 60;  // beats per minute
-    public static final int beatsPerMeasure = 4;
+    public static int beatsPerMinute = 60;  // beats per minute
+    public static int beatsPerMeasure = 4;
 
     public static final int millisecondsInAMinute = 60000;
 
-    public static final int beatLengthMilli = millisecondsInAMinute / beatsPerMinute;
-    public static final int measureLengthMilli = beatLengthMilli * beatsPerMeasure;
+    public static int beatLengthMilli = millisecondsInAMinute / beatsPerMinute;
+    public static int measureLengthMilli = beatLengthMilli * beatsPerMeasure;
 
     public static int currentBeat = 1;
 
@@ -47,20 +50,25 @@ public class GuitarRunner implements Runnable {
     ChordLegacy nextChord;
 
     Context context;
+    MainActivity mainActivity;
     public MediaPlayer mediaPlayer;
+    EditText editTempo;
 
-    GuitarRunner(Context context) {
+    GuitarRunner(Context context, MainActivity mainActivity) {
         currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
         this.context = context;
+        this.mainActivity = mainActivity;
         mediaPlayer = MediaPlayer.create(context, R.raw.metronome);
+        editTempo = mainActivity.findViewById(R.id.editTempo);
     }
 
     @Override
     public void run() {
-        System.out.println("Current Beat" + currentBeat);
+//        System.out.println("Current Beat" + currentBeat);
         playSound(currentBeat == 1);
         flashMetronome();
+        checkForTempoChange();
 
         if (currentBeat == 1) {
             changeChord();
@@ -69,6 +77,20 @@ public class GuitarRunner implements Runnable {
         }
 
         currentBeat++;
+    }
+
+    private void checkForTempoChange() {
+        int userSetTempo;
+        try {
+            userSetTempo = Integer.getInteger(editTempo.getText().toString());
+        } catch (NullPointerException npe) {
+            return;
+        }
+        if (userSetTempo != beatsPerMinute) {
+            beatsPerMinute = userSetTempo;
+            mainActivity.scheduler.shutdown();
+            mainActivity.scheduler.scheduleAtFixedRate(this, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
+        }
     }
 
     private void playSound(boolean playLoud) {
