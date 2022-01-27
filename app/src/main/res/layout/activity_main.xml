@@ -49,16 +49,15 @@
         android:id="@+id/editTempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="@string/edit_tempo_hint"
         android:inputType="number"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBaseline_toBaselineOf="@+id/updateTempo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempo" />
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/goToLearn"
@@ -71,5 +70,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/updateTempo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="44dp"
+        android:onClick="processTempoChange"
+        android:text="@string/update_tempo_button"
+        app:layout_constraintStart_toEndOf="@+id/editTempo"
+        app:layout_constraintTop_toBottomOf="@+id/tempo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

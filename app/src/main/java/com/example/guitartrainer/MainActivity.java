@@ -2,6 +2,7 @@ package com.example.guitartrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     TextView currentChordView;
     TextView tempoView;
     TextView nextChordView;
+    EditText editTempo;
 
     static Handler chordHandler;
     static Handler metronomeHandler;
@@ -113,8 +116,34 @@ public class MainActivity extends AppCompatActivity {
         tempoView = findViewById(R.id.tempo);
         tempoView.setText(GuitarRunner.beatsPerMinute + " BPM");
 
+        editTempo = findViewById(R.id.editTempo);
+
         currentChordView = findViewById(R.id.currentChord);
         nextChordView = findViewById(R.id.nextChord);
+    }
+
+    public void processTempoChange(View view) {
+        String inputTempoString = editTempo.getText().toString();
+        if (inputTempoString.equals("")) {return;}
+
+        int userSetTempo = Integer.parseInt(inputTempoString);
+        if (userSetTempo != GuitarRunner.beatsPerMinute) {
+            GuitarRunner.beatsPerMinute = userSetTempo;
+            GuitarRunner.beatLengthMilli = GuitarRunner.millisecondsInAMinute / GuitarRunner.beatsPerMinute;
+
+            tempoView.setText(GuitarRunner.beatsPerMinute + " BPM");
+
+            editTempo.setText("");
+            editTempo.setHint(R.string.edit_tempo_hint);
+            editTempo.clearFocus();
+            
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);  // hide keyboard
+
+            scheduler.shutdown();
+            scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleAtFixedRate(guitarRunner, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
+        }
     }
 
     public void goToLearnMode(View view) {

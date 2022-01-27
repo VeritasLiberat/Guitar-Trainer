@@ -2,4 +2,5 @@
     <string name="app_name">Guitar Trainer</string>
     <string name="edit_tempo_hint">Edit Tempo</string>
     <string name="learn_button">Learn</string>
+    <string name="update_tempo_button">Update Tempo</string>
 </resources>
