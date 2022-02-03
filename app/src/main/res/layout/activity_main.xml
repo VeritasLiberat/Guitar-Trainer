@@ -10,7 +10,7 @@
         android:id="@+id/currentChord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="24dp"
         android:text="Current Chord"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display4"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:text="TextView"
+        android:text="Tempo"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,20 +49,20 @@
         android:id="@+id/editTempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="44dp"
         android:ems="10"
         android:hint="@string/edit_tempo_hint"
         android:inputType="number"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintBaseline_toBaselineOf="@+id/updateTempo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintBottom_toTopOf="@+id/timer"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/goToLearn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:onClick="goToLearnMode"
         android:text="@string/learn_button"
@@ -76,10 +76,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="44dp"
         android:onClick="processTempoChange"
         android:text="@string/update_tempo_button"
-        app:layout_constraintStart_toEndOf="@+id/editTempo"
-        app:layout_constraintTop_toBottomOf="@+id/tempo" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTempo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/editTempo" />
+
+    <Chronometer
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="44dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/goToLearn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/resetTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:onClick="restartTimer"
+        android:text="@string/reset_timer_button"
+        app:layout_constraintBaseline_toBaselineOf="@+id/timer"
+        app:layout_constraintStart_toEndOf="@+id/timer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

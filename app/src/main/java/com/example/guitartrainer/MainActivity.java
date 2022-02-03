@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tempoView;
     TextView nextChordView;
     EditText editTempo;
+    Chronometer timer;
 
     static Handler chordHandler;
     static Handler metronomeHandler;
@@ -80,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         scheduler.shutdown();
+
+        timer.stop();
+        GuitarRunner.timeWhenTimerStopped = SystemClock.elapsedRealtime() - timer.getBase();
     }
 
     @Override
@@ -89,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
             scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(guitarRunner, 0, GuitarRunner.beatLengthMilli, TimeUnit.MILLISECONDS);
         }
+
+        timer.setBase(SystemClock.elapsedRealtime() - GuitarRunner.timeWhenTimerStopped);
+        timer.start();
     }
 
     void buildHandlers() {
@@ -120,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
         currentChordView = findViewById(R.id.currentChord);
         nextChordView = findViewById(R.id.nextChord);
+
+        timer = findViewById(R.id.timer);
     }
 
     public void processTempoChange(View view) {
@@ -149,5 +160,10 @@ public class MainActivity extends AppCompatActivity {
     public void goToLearnMode(View view) {
         Intent intent = new Intent(this, ChordListActivity.class);
         startActivity(intent);
+    }
+
+    public void restartTimer(View view) {
+        timer.setBase(SystemClock.elapsedRealtime());
+        GuitarRunner.timeWhenTimerStopped = 0;
     }
 }

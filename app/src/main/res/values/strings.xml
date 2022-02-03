@@ -3,4 +3,5 @@
     <string name="edit_tempo_hint">Edit Tempo</string>
     <string name="learn_button">Learn</string>
     <string name="update_tempo_button">Update Tempo</string>
+    <string name="reset_timer_button">Reset Timer</string>
 </resources>

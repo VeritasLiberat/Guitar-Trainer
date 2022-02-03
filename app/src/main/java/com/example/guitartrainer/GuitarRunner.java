@@ -53,6 +53,8 @@ public class GuitarRunner implements Runnable {
     MainActivity mainActivity;
     public MediaPlayer mediaPlayer;
 
+    public static long timeWhenTimerStopped = 0;
+
     GuitarRunner(Context context, MainActivity mainActivity) {
         currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
