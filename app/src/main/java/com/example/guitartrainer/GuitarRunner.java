@@ -41,7 +41,7 @@ public class GuitarRunner implements Runnable {
     public static int beatLengthMilli = millisecondsInAMinute / beatsPerMinute;
     public static int measureLengthMilli = beatLengthMilli * beatsPerMeasure;
 
-    public static int currentBeat = 1;
+    public int currentBeat;
 
     static final float loudVolume = 1.0f;
     static final float normalVolume = 0.4f;
@@ -57,6 +57,7 @@ public class GuitarRunner implements Runnable {
     boolean isCountOff = true;
 
     GuitarRunner(Context context, MainActivity mainActivity) {
+        currentBeat = 1;
         nextChord = ChordLegacy.getRandomChord();
         this.context = context;
         this.mainActivity = mainActivity;
