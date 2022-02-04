@@ -54,9 +54,9 @@ public class GuitarRunner implements Runnable {
     public MediaPlayer mediaPlayer;
 
     public static long timeWhenTimerStopped = 0;
+    boolean isCountOff = true;
 
     GuitarRunner(Context context, MainActivity mainActivity) {
-        currentChord = ChordLegacy.getRandomChord();
         nextChord = ChordLegacy.getRandomChord();
         this.context = context;
         this.mainActivity = mainActivity;
@@ -69,10 +69,14 @@ public class GuitarRunner implements Runnable {
         playSound(currentBeat == 1);
         flashMetronome();
 
-        if (currentBeat == 1) {
-            changeChord();
-        } else if (currentBeat >= beatsPerMeasure) {
-            currentBeat = 0;
+        if (isCountOff) {
+            handleCountOff();
+        } else {
+            if (currentBeat == 1) {
+                changeChord();
+            } else if (currentBeat >= beatsPerMeasure) {
+                currentBeat = 0;
+            }
         }
 
         currentBeat++;
@@ -91,6 +95,18 @@ public class GuitarRunner implements Runnable {
     void flashMetronome() {
         Message message = MainActivity.metronomeHandler.obtainMessage();
         MainActivity.metronomeHandler.sendMessage(message);
+    }
+
+    void handleCountOff() {
+        Message message = MainActivity.chordHandler.obtainMessage();
+        message.obj = new String[]{Integer.toString(currentBeat), nextChord.toString()};
+        MainActivity.chordHandler.sendMessage(message);
+        if (currentBeat >= beatsPerMeasure) {
+            currentBeat = 0;
+            isCountOff = false;
+            currentChord = nextChord;
+            nextChord = ChordLegacy.getRandomChord();
+        }
     }
 
     void changeChord() {
